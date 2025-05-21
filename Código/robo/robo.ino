@@ -44,10 +44,10 @@ void setup() {
 
 void loop() {
   // Velocidade dos motores
-  analogWrite(motorEsqPWM, 200);
-  analogWrite(motorDirPWM, 200);
+  analogWrite(motorEsqPWM, 230);
+  analogWrite(motorDirPWM, 230);
 
-  // Leitura dos sensores
+  // // Leitura dos sensores
   int s1 = digitalRead(sensorEsquerdo);
   int s2 = digitalRead(sensorCentroEsquerdo);
   int s3 = digitalRead(sensorCentro);
@@ -73,16 +73,9 @@ void loop() {
   bool darReEsquerda = (s1 == LOW && s2 == LOW && s3 == LOW && s4 == LOW && s5 == HIGH);
 
   // Lógica de linha
-  if (s3 == LOW && s2 == LOW && s4 == LOW && s1 == LOW && s5 == LOW || faixaCruzada) {
+  if (s3 == LOW && s2 == LOW && s4 == LOW && s1 == LOW && s5 == LOW || faixaCruzada || (s2 == HIGH && s5 == HIGH) || (s4 == HIGH && s1 == HIGH)) {
     frente();
-  } else if ((s1 == HIGH && s2 == HIGH) || darReEsquerda) {
-    reEsquerda();
-    delay(100);
-  }
-  else if ((s4 == HIGH && s5 == HIGH) || darReDireita) {
-    reDireita();
-    delay(100);
-  } else if (s3 == HIGH && s2 == LOW && s4 == LOW && s1 == LOW && s5 == LOW) {
+  }  else if (s3 == HIGH && s2 == LOW && s4 == LOW && s1 == LOW && s5 == LOW) {
     frente();
   } else if (s4 == HIGH || s5 == HIGH) {
       curvaEsquerda();
@@ -98,13 +91,6 @@ void loop() {
 void frente() {
   digitalWrite(motorEsqIN1, HIGH);
   digitalWrite(motorEsqIN2, LOW);
-  digitalWrite(motorDirIN3, HIGH);
-  digitalWrite(motorDirIN4, LOW);
-}
-
-void curvaEsquerda() {
-  digitalWrite(motorEsqIN1, HIGH);
-  digitalWrite(motorEsqIN2, LOW);
   digitalWrite(motorDirIN3, LOW);
   digitalWrite(motorDirIN4, HIGH);
 }
@@ -112,20 +98,27 @@ void curvaEsquerda() {
 void curvaDireita() {
   digitalWrite(motorEsqIN1, LOW);
   digitalWrite(motorEsqIN2, HIGH);
+  digitalWrite(motorDirIN3, LOW);
+  digitalWrite(motorDirIN4, HIGH);
+}
+
+void curvaEsquerda() {
+  digitalWrite(motorEsqIN1, HIGH);
+  digitalWrite(motorEsqIN2, LOW);
   digitalWrite(motorDirIN3, HIGH);
   digitalWrite(motorDirIN4, LOW);
 }
 
 void reEsquerda() {
-  digitalWrite(motorEsqIN1, LOW);
-  digitalWrite(motorEsqIN2, HIGH);
+  digitalWrite(motorEsqIN1, HIGH);
+  digitalWrite(motorEsqIN2, LOW);
   digitalWrite(motorDirIN3, HIGH);
   digitalWrite(motorDirIN4, LOW);
 }
 
 void reDireita() {
-  digitalWrite(motorEsqIN1, HIGH);
-  digitalWrite(motorEsqIN2, LOW);
+  digitalWrite(motorEsqIN1, LOW);
+  digitalWrite(motorEsqIN2, HIGH);
   digitalWrite(motorDirIN3, LOW);
   digitalWrite(motorDirIN4, HIGH);
 }
